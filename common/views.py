@@ -45,7 +45,7 @@ def mypage(requset):
 
 def kakao_login(request):
     try:
-        client_id = "0863a5c54f986f50493b0753a2484b9e"
+        client_id = ""
         redirect_uri = "http://127.0.0.1:8010/common/kakaologin/callback/"
         return redirect(f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code")
 
