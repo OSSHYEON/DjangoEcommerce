@@ -1,5 +1,8 @@
 # DjangoEcommerce
 
+![image](https://user-images.githubusercontent.com/94279314/153344989-800343fb-5839-486e-ac1e-ac4ff530a7e1.png)
+
+
 ## Requirements
   + easy_thumbnails
   ```pip install easy_thumbnails```
