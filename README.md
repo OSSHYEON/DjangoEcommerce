@@ -1,6 +1,8 @@
 # DjangoEcommerce
 
 ![image](https://user-images.githubusercontent.com/94279314/153344989-800343fb-5839-486e-ac1e-ac4ff530a7e1.png)
+![shop](https://user-images.githubusercontent.com/94279314/153346391-dece1b57-cd4a-47f8-83bc-112aadbb770d.gif)
+
 
 
 ## Requirements
