@@ -50,5 +50,5 @@
 
     })
   ```
-  + RESTful api ```http://127.0.0.1:8010/shop/1/```
+  + RESTful api: 상품 정보, 질문 작성자 유저 정보 전달 시 활용 ```예시 ) http://127.0.0.1:8010/shop/1/```
   + javascript/jquery
