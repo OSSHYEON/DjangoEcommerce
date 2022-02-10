@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from board.models import Notice, Question
 from django.contrib.auth.decorators import login_required
-
+from .forms import QustionForm
 
 def notice_list(request):
     notice_list = Notice.objects.order_by('create_date')
@@ -27,8 +27,9 @@ def question_detail(request, pk):
 
 
 @login_required(login_url='common:login')
-def question_create(request, question_id):
-    pass
+def question_create(request):
+    question = QustionForm()
+    return render(request, 'board/question_create.html',{'question':question})
 
 @login_required(login_url='common:login')
 def answer_create(request, answer_id):

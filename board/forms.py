@@ -4,8 +4,7 @@ from .models import Question, Answer, Comment, User
 class QustionForm(forms.ModelForm):
     class Meta:
         model = Question
-        field = [
-            'author',
+        fields = [
             'title',
             'content'
         ]
@@ -19,9 +18,7 @@ class QustionForm(forms.ModelForm):
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        field = [
-            'author',
-            'title',
+        fields = [
             'content'
         ]
         widgets = {
