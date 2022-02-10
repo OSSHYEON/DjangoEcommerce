@@ -12,7 +12,7 @@
   
   
 ## Using
-  + Fetch api
+  + Fetch api : 장바구니에 상품 추가, 수량 변경, 배송지 정보를 view에 넘겨줄 때 활용
   ``` 
   $(document).ready(function(){
         $('.qt_btn').click(function(){
