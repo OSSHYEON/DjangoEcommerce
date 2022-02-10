@@ -10,3 +10,36 @@
   + debug_toolbar
   ```pip install django-debug-toolbar```
   
+  
+## Using
+  + Fetch api
+  ``` 
+  $(document).ready(function(){
+        $('.qt_btn').click(function(){
+            var productId = this.dataset.product
+            var action = this.dataset.action;
+            console.log(action);
+            console.log(productId);
+
+            fetch("/update_item/",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken' : csrftoken,
+                },
+                body:JSON.stringify({'productId':productId, 'action':action})
+            })
+            .then((response)=>{
+                return response.json()
+            })
+            .then((data)=>{
+                console.log('상품 갯수를 변경했습니다')
+            })
+            location.reload();
+
+        })
+
+    })
+  ```
+  + RESTful api ```http://127.0.0.1:8010/shop/1/```
+  + javascript/jquery
