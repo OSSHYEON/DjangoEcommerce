@@ -9,15 +9,15 @@
 
 ## Requirements
   + ```django 4.0.1 ```
-  ++```pip install django```
+  ```pip install django```
   + ```easy_thumbnails 2.8.1```
-  ++```pip install easy_thumbnails```
+  ```pip install easy_thumbnails```
   + ```allauth 0.48.0```
-  ++```pip install django-allauth```
+  ```pip install django-allauth```
   + ```rest_framework 3.13.1```
-  ++```pip install djangorestframework```
+  ```pip install djangorestframework```
   + ```debug_toolbar 3.2.4```
-  ++```pip install django-debug-toolbar```
+  ```pip install django-debug-toolbar```
   
   
 ## Using
