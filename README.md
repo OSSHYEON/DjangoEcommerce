@@ -8,5 +8,5 @@
   + rest_framework
   ```pip install djangorestframework```
   + debug_toolbar
-  ```pip install django-debug-toolbar
+  ```pip install django-debug-toolbar```
   
