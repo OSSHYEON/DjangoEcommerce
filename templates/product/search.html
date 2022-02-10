@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="show">
+
+    {% if item_list %}
+        {% for search_item in item_list %}
+            <ul>
+                <li>
+                    {{ search_item.name }}
+                    {{ search_item.price }}
+                </li>
+            </ul>
+        {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock %}

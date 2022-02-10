@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@300&family=Handlee&family=Sunflower:wght@300;500;700&display=swap');
+
+body{
+    font-family: 'Hahmlet', serif;
+}
+
+.top_menu{
+    font-size: .8rem;
+    padding: 20px;
+    background-color: #2f2f2f;
+    color: white;
+    padding-top: 38px;
+    height:150px;
+}
+
+.customer-menu{
+    padding-top: 1%;
+    padding-left:75%;
+}
+
+.top_menu .customer-menu li{
+    text-align: center;
+    list-style: none;
+    float:left;
+}
+
+.top_menu .customer-menu li a{
+    float: left;
+    color: white;
+    text-decoration: none;
+    padding-right : 30px;
+    font-size: 13px;
+}
+
+
+.second_top_menu{
+    padding: 3rem;
+    background-color: white;
+    border-bottom: 0.002em dotted #E6E6E6;
+}
+
+.logo{
+    padding-left: 43%;
+    width:100%;
+}
+
+.logo_phrase{
+    font-size: 35px;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+}
+
+
+
+
+.navbar{
+    padding-left: 15.5rem;
+}
+
+.navbar-brand{
+    padding: 10px;
+}
+
+.navbar > a{
+    font-size: 14px;
+}
+
+.d-flex{
+    width: 18%;
+    float: right;
+    height: 30px;
+
+}
+
+
+.search{
+    background-color: white;
+    border: 0;
+    outline: 0;
+    padding-left: 10px;
+}
+
+
+
+
+.comment{
+    border-top:dotted 1px #ddd;
+    font-size:0.7em;
+}
+
+.cart-row{
+    display: flex;
+    align-items: flex-stretch;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ececec;
+}
+
+.img_up_down{
+    margin-left: 30px;
+    margin-top: -40px;
+}
+
+.chg-quantity{
+    margin-left: 10px;
+}
+
+.product-name{
+    text-align:center;
+    padding-top:2px;
+    font-size:15px;
+    letter-spacing:1px;
+    border:1px solid #ececec;
+    margin-top:5px;
+}
+
+.price{
+    text-align: right;
+}
+
+.btn-to-cart{
+    border: none;
+    background-color: #1C1C1C;
+    color: white;
+    float: left;
+    border-radius: 3px;
+    letter-spacing: 1px;
+}
+
+

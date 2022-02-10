@@ -1,0 +1,38 @@
+.container{
+    padding-left: 40%;
+    padding-top: 10%;
+
+}
+
+.form-group{
+    padding: 3px;
+}
+
+
+.form-control{
+    padding-left: 10px;
+    width: 280px;
+    height: 40px;
+    border: 1px solid #F2F2F2;
+    border-radius: 5px;
+}
+
+.btn_wrap{
+    padding: 10px 5px;
+}
+
+.btn{
+    width: 300px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+}
+
+.box{
+    width: 300px;
+    margin: 40px 40% 0px;
+    border-top: 1px solid #BDBDBD;
+}
+

@@ -1,0 +1,169 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="http://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script src="{% static 'js/checkout.js' %}"></script>
+
+<style>
+  .content02 {
+    width: 50%;
+    margin-top: 60px;
+  }
+
+  .form-group td{
+    width: 1%;
+    padding-top: 20px;
+  }
+
+  .buy-btn{
+    border:none;
+    text-align:center;
+    margin-top: 40px;
+    margin-bottom: 130px;
+    width: 300px;
+    height: 48px;
+    background-color: #0174DF;
+    color: white;
+    float: right;
+  }
+
+  .addr-btn{
+    float:left;
+    border:none;
+    background-color:#1C1C1C;
+    color: white;
+    height: 38px;
+    border-radius: 5px;
+    margin-left:5px;
+    }
+
+    .pay-btn{
+        width: 300px;
+        height: 60px;
+        border:none;
+        margin: 70px 30px 100px 0px;
+    }
+
+    #kakaopay{background-color: yellow;}
+    #gift-card{background-color: black; color:white;}
+    #phone-pay{background-color: lightgray;}
+</style>
+
+
+<div class="order" style="padding: 70px 200px 40px 270px;">
+  <h3>주문서 작성</h3>
+</div>
+
+<div id="shipping-info">
+<div class="col-lg-12">
+    <div class="box-element" style="padding: 50px 200px 0px 270px;">
+        <div class="cart-row">
+              <div style="flex:2">상품</div>
+              <div style="flex:2">상품 상세</div>
+              <div style="flex:1">가격</div>
+              <div style="flex:1">수량</div>
+              <div style="flex:1"><strong>합계</strong></div>
+          </div>
+
+
+          {% for item in items %}
+          <div class="cart-row" >
+              <div style="flex:2"><img src="{{ item.product.image.url }}" style="width:80px; height:105px;" alt="product-img" class="row-image"></div>
+              <div style="flex:2">{{ item.product.name }}</div>
+
+              <div style="flex:1">{{ item.product.price }}</div>
+              <div style="flex:1">
+                  <p class="quantity">{{ item.quantity }}</p>
+
+
+              </div>
+              <div style="flex:1"><strong>{{ item.get_total }}</strong></div>
+          </div>
+          {% endfor %}
+
+          <div class="total_price">
+              <table class="cart-summary" style="border: 1px solid #ececec; width:100%; margin-top:30px;">
+                  <thead style="text-align:center;">
+                    <tr>
+                        <th style="padding-top: 30px; padding-bottom:30px;"> 총 수량 </th>
+                        <th style="padding-top: 30px; padding-bottom:30px; padding-left: 100px;">결제예정금액</th>
+                    </tr>
+                  </thead>
+
+
+                  <tbody style="text-align:center; border-top: 1px solid #ececec;">
+                    <tr>
+                        <td style="padding-top:30px; padding-bottom: 30px;">{{ order.get_cart_items }}개</td>
+                        <td style="padding-top: 30px;padding-left:100px; padding-bottom: 30px;">={{ order.get_cart_total }}원</td>
+
+                    </tr>
+                  </tbody>
+
+              </table>
+          </div>
+      </div>
+
+</div>
+
+
+<div style="padding: 70px 200px 0px 270px;">
+<h4 class="order_sheet">구매자 정보</h4>
+
+<form method="POST" id="form" onsubmit="return check_email()">
+{% csrf_token %}
+    <label for="product_name"></label><input type="hidden" id="product_name" name="product_name" value="{{ item.product.name }}">
+    <label for="quant"></label><input type="hidden" value="{{ item.quantity }}" id="quant" name="quant">
+    <input type="hidden" id="quantity" name="quantity" value="{{ order.get_cart_items }}">
+    <input type="hidden" id="total" name="total" value="{{ order.get_cart_total }}">
+    <table class="content02">
+        <tr class="form-group">
+            <td><label for="name">구매자</label></td>
+            <td colspan="2"><input type="text" class="form-control" name="name" id="name" value="{{ request.user.customer }}" style="width:280px"></td>
+        </tr>
+
+        <tr class="form-group">
+            <td><label for="post_address">주소</label></td>
+            <td><input type="text" class="form-control" name="post_address" id="post_address"  placeholder="우편번호" style="width:120px;display:inline-block; float:left;">
+                <input type="button" onclick="findAddr()" value="우편번호 찾기" class="addr-btn">
+            </td>
+        </tr>
+
+        <tr  class="form-group">
+            <td rowspan="1"></td>
+            <td>
+                <label for="road_name"></label><input type="text" class="form-control" name="road_name" id="road_name" placeholder="도로명주소" style="width:250px; display:inline-block; float:left;">
+                <label for="number_addr"></label><input type="text" class="form-control" name="number_addr" id="number_addr" placeholder="지번주소" style="width:250px; float:left;">
+                <label for="detail_addr"></label><input type="text" class="form-control" name="detail_addr" id="detail_addr" placeholder="상세주소" style="width:500px;">
+            </td>
+        </tr>
+
+        <tr class="form-group">
+            <td><label for="phone">전화번호</label></td>
+            <td><input type="text" class="form-control" name="phone" id="phone" placeholder="ex) 010-1111-2222" style="width:280px;"></td>
+        </tr>
+
+        <tr class="form-group">
+            <td><label for="email">이메일</label></td>
+            <td><input type="text" class="form-control" name="email" id="email" placeholder="ex) email@email.com" style="width:280px;"></td>
+        </tr>
+    </table>
+
+<div class="payment_btn_wrap">
+    <button class="pay-btn" id="kakaopay" onclick="kakako()"> 결제하기 </button>
+</div>
+
+</form>
+</div>
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+

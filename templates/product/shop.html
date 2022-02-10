@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<script src="{% static 'js/cart.js' %}"></script>
+
+<div class="section01" style="padding: 10.5rem; text-align:center; margin-bottom:120vh;">
+<h3 style="text-align:center; padding:10px 0px 50px;"> 상품 전체 </h3>
+<ul style="text-align:center; list-style:none; padding-left: 4.5%; ">
+        {% for product in products %}
+            <li style="float:left; padding: 18px;">
+                <a href="{% url 'detail' product.id %}"><img class="thumbnail" src="{{ product.image.url }}" alt="img" style="width:232px; height:270px;"></a>
+                    <div class="product-name">
+                        <a href="#" style="text-decoration : none; color:black;">{{ product.name }}</a>
+                    </div>
+                    <div class="product-name" style="height:25px;">
+                        <button data-product="{{ product.id }}" data-action="add" class="btn-to-cart" onclick="btn_to_cart()">장바구니 담기</button>
+                        <p style="text-decoration : none; color:black; float:right; margin-right: 10px;">{{ product.price }}원</p>
+                    </div>
+            </li>
+        {% endfor %}
+</ul>
+</div>
+
+
+{% endblock %}

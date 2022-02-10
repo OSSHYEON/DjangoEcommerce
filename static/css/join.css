@@ -1,0 +1,16 @@
+.container{
+    padding-left: 25%;
+    padding-top: 3%;
+}
+
+.form-control{
+    width: 280px;
+    height:44px;
+    border: 1px solid #F2F2F2;
+    border-radius: 5px;
+}
+
+.form-control::placeholder{
+    font-size:14px;
+}
+

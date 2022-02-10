@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/detail.css' %}">
+<div class="container">
+<h2>공지사항</h2>
+    <div class="title">
+
+        {{ notice_detail.subject }}
+    </div>
+
+    <div class="name">
+        <span>{{ notice_detail.author }}</span>
+    </div>
+
+    <div class="content">
+        {{ notice_detail.content }}
+    </div>
+
+    <div class="time">
+        {% if modify_date is null %}
+            {{ notice_detail.create_date }}
+        {% else %}
+            {{ notice_detail.modify_date }}
+        {% endif %}
+    </div>
+
+
+
+
+</div>
+{% endblock %}

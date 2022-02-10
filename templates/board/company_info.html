@@ -1,0 +1,40 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/QnA.css' %}">
+<style>
+    th, td{text-align:left;}
+</style>
+<div class="content01">
+    <div class="menu">
+        <div class="table">
+            <h1>판매자 정보</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>OSS의 야채상점</th>
+                    <td>열정 가득한 OSS가 직접 고르고 포장해 고객님의 식탁까지 안전배송해드리겠습니다!</td>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <th>대표자</th>
+                    <td>OSS</td>
+                </tr>
+                <tr>
+                    <th>상호명</th>
+                    <td>OSS</td>
+                </tr>
+
+                <tr>
+                    <th>사업장 소재지</th>
+                    <td>대한민국 어딘가</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

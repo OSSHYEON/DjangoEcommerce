@@ -1,0 +1,119 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load static %}
+<script language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+<script src="{% static 'js/star.js' %}"></script>
+
+
+<div class="content">
+    <div class="section01">
+        <div class="product_image">
+                <h5>{{ products.name }} | {{ products.id }}</h5>
+                <img src="{{ products.image.url }}" alt="img" style="width:300px; height:400px;">
+        </div>
+
+        <input type="hidden" id="consumer" name="consumer" value="{{ request.user.username }}">
+        <input type="hidden" id="product" name="product" value="{{ product.id }}">
+
+    </div>
+
+    <div class="product_info">
+        <table>
+            <thead>
+            <tr>
+                <th>상품명</th>
+                <td>{{ products.name }}</td>
+
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <th>가격</th>
+                <td>{{ products.price }}원</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="info_box">
+
+
+
+                {% csrf_token %}
+                <input type="number" value="{{ order.quantity }}" name="quantity" id="quantity" style="width:100px;" >
+        <!--                        <button id="up"><img src="{% static 'images/plus.png' %}" alt="plus" style="width:15px; height:10px;"></button>-->
+        <!--                        <button id="down"><img src="{% static 'images/minus.png' %}" alt="minus" style="width:15px; height:10px;"></button>-->
+
+                <input type="hidden" name="price" id="price"  value="{{ products.price }}">개
+        </div>
+
+
+        <div class="button_wrap">
+            <button class="buy_button" id="buy_button" onclick="location.href='{% url 'checkout' %}'">구매하기</button>
+            <button class="cart_button" type="button">장바구니 담기</button>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<section>
+<ul class="tab_menu">
+    <li data-alt="tab1" class="active">상세정보</li>
+    <li data-alt="tab2">상품후기</li>
+    <li data-alt="tab3">상품문의</li>
+    <li data-alt="tab4">교환/반품</li>
+</ul>
+<div class="tabs">
+    <div id="tab1" class="active">
+        <p>{{ products.about|linebreaks }}</p>
+    </div>
+    <div id="tab2">
+        <table>
+            <thead>
+            <tr>
+                <th style="font-size:18px;">리뷰</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>
+                    <form method="post" class="review-form">
+                        {% csrf_token %}
+                        <input type="text" class="reivew-content" id="content" name="content" placeholder="리뷰를 남겨주세요!" style="height: 100px; width:1058px; margin: 0px;">
+                        <input type="hidden" value="{{ product.id }}" id="review-product" name="review-product">
+                        <button type="submit" style="border:none; width:100px; height:100px; background-color:black; color:white;" id="review-btn">리뷰 작성</button>
+                        <ul style="border-top: 1px solid #D8D8D8;; margin-top: 100px;">
+                            <li style="margin-top: 30px; list-style:none;"></li>
+                        </ul>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="tab3"></div>
+    <div id="tab4"></div>
+</div>
+</section>
+
+<div class="section03">
+    <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+    </div>
+    <div class="print">
+        후기를 남겨주세요!
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/QnA.css' %}">
+
+<div class="content">
+    <div class="header">
+        <div class="table">
+            <table>
+                <h1>질문게시판</h1>
+                <thead class="question_thead">
+                <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    {% if question_list %}
+                        {% for question in question_list %}
+                            <tr>
+                            <td>{{ question.id }}</td>
+                            <td><a href="{% url 'board:question_detail' question.id %}">{{ question.title }}</a></td>
+                            <td>{{ question.author.username }}</td>
+                            <td>
+                                {% if question.modify_date is null %}
+                                    {{ question.create_date }}
+                                {% else %}
+                                    {{ question.modify_date }}
+                                {% endif %}
+                            </td>
+                            <td></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

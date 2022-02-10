@@ -1,0 +1,41 @@
+body{overflow-x:hidden;}
+
+table{
+    width: 1320px;
+    border-top: 1px solid #D8D8D8;
+}
+
+
+.table{
+    margin-left: 250px;
+    margin-top: 60px;
+}
+
+.table h1{
+    margin-bottom: 30px;
+}
+
+th{
+    height: 68px;
+    border-top: 1px solid #D8D8D8;
+    border-bottom: 1px solid #D8D8D8;
+}
+
+td{
+    height: 68px;
+    border-bottom: 1px solid #D8D8D8;
+}
+
+table thead{
+    text-align: center;
+}
+
+table tbody{
+    text-align: center;
+}
+
+
+table tbody a{
+    text-decoration: none;
+    color: black;
+}
