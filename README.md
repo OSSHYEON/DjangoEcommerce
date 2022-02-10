@@ -7,9 +7,6 @@
 ![Test](https://user-images.githubusercontent.com/94279314/153346712-a1fb78bb-0901-4bef-afe9-78c8a9a30bcd.gif)
 
 
-![New Piskel-1 png (8)](https://user-images.githubusercontent.com/94279314/153346875-ae453c1a-ac81-4392-83d0-e7765abaadfb.png)
-
-
 ## Requirements
   + easy_thumbnails
   ```pip install easy_thumbnails```
