@@ -8,13 +8,15 @@
 
 
 ## Requirements
-  + easy_thumbnails
+  + ```django 4.0.1 ```
+  ```pip install django```
+  + ```easy_thumbnails 2.8.1```
   ```pip install easy_thumbnails```
-  + allauth
+  + ```allauth 0.48.0```
   ```pip install django-allauth```
-  + rest_framework
+  + ```rest_framework 3.13.1```
   ```pip install djangorestframework```
-  + debug_toolbar
+  + ```debug_toolbar 3.2.4```
   ```pip install django-debug-toolbar```
   
   
@@ -48,5 +50,5 @@
 
     })
   ```
-  + RESTful api ```http://127.0.0.1:8010/shop/1/```
+  + RESTful api: 상품 정보, 질문 작성자 유저 정보 전달 시 활용 ```예시 ) http://127.0.0.1:8010/shop/1/```
   + javascript/jquery
