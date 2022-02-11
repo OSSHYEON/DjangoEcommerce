@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.safestring import mark_safe
@@ -43,24 +43,27 @@ def shop(request):
 
 
 def detail(request, pk):
-
+    page = request.GET.get('page', 1)
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
-        form = ReviewForm()
+        reviews= Review.objects.filter(product_id=pk).order_by('-create_date')
+        paginator = Paginator(reviews, 5)
+        page_object = paginator.get_page(page)
+
     else:
         try:
             items = []
             order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
             cartItems = order['order.get_cart_items']
-            form = ReviewForm()
+
         except:
             cartItems = 0
-    products = get_object_or_404(Product, id=pk)
-    context ={'products':products, 'cartItems':cartItems, 'form':'form'}
 
+    products = get_object_or_404(Product, id=pk)
+    context ={'products':products, 'cartItems':cartItems, 'reviews':page_object}
     return render(request, 'product/product_detail.html', context)
 
 
@@ -73,21 +76,27 @@ def star_rating(request, pk):
 
     if action == 'star_rating':
         product.star_rating = starRate
-# def add_review(request):
-#     url = request.META.get('HTTP_REFERER')
-#     try:
-#         if request.method == 'POST':
-#             form = ReviewForm(request.POST)
-#             review = Review()
-#             product = form.cleaned_data['review-product']
-#             review.product_id = product.id
-#             review.customer_id = request.user.customer.id
-#             review.content = form.cleaned_data['content']
-#             review.create_date = timezone.now()
-#             review.save()
-#             return redirect('detail')
-#     except Exception as e:
-#         print(e)
+
+    return JsonResponse('별점이 추가되었습니다', safe=False)
+
+
+def add_review(request):
+    data = json.loads(request.body)
+    product_id = data['productId']
+    content= data['content']
+    try:
+        review = Review.objects.create(
+            product_id = product_id,
+            customer_id = request.user.customer.id,
+            content = content,
+            create_date = timezone.now()
+        )
+        review.save()
+        return JsonResponse('리뷰가 추가되었습니다', safe=False)
+    except Exception as e:
+        print(e)
+
+
 
 
 
@@ -131,16 +140,13 @@ def checkout(request):
 
 
 def updateItem(request):
-
     data = json.loads(request.body)
-
     productId = data['productId']
     action = data['action']
-
     customer = request.user.customer
     product = Product.objects.get(id=productId)
-    order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
 
@@ -214,20 +220,15 @@ def kakaopay(request):
         }
 
         print(headers, data)
-        try:
-            response = requests.post(url, data=data, headers=headers)
-            print(response)
-            result = response.json()
-            request.session['tid'] = result['tid']
-            print(result['tid'])
-            next_url = result['next_redirect_pc_url']
-            print(next_url)
-            return redirect(result['next_redirect_pc_url'])
 
-        except Exception as e:
-            print("에러 : ", e)
-            return render(request, 'product/checkout.html')
-
+        response = requests.post(url, data=data, headers=headers)
+        print(response)
+        result = response.json()
+        request.session['tid'] = result['tid']
+        print(result['tid'])
+        next_url = result['next_redirect_pc_url']
+        print(next_url)
+        return redirect(next_url)
 
 
 
@@ -248,6 +249,7 @@ def pay_success(request):
         'partner_user_id': request.user.customer,
         'pg_token': request.GET['pg_token']
     }
+    print(request.session.keys())
 
     try:
         response = requests.post(url, data=data, headers=headers)

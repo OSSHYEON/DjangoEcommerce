@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 from board.models import Notice, Question
 from django.contrib.auth.decorators import login_required
-from .forms import QustionForm
+from .forms import QuestionForm
 from django.core.paginator import Paginator
 
 
@@ -36,8 +37,16 @@ def question_detail(request, pk):
 
 @login_required(login_url='common:login')
 def question_create(request):
-    question = QustionForm()
-    return render(request, 'board/question_create.html',{'question':question})
+    form = QuestionForm()
+    if request.method == "POST":
+        question = form.save(commit=False)
+        question.title = request.POST['title']
+        question.content = request.POST['content']
+        question.create_date=timezone.now()
+        question.author = request.user.customer
+        question.save()
+        return redirect('board:question_list')
+    return render(request, 'board/question_create.html', {'form':form})
 
 @login_required(login_url='common:login')
 def answer_create(request, answer_id):

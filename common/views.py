@@ -10,24 +10,19 @@ from django.contrib import messages
 from common.forms import UserForm
 
 
-
-
 def signup(request):
     if request.method == "POST":
-        print('zz')
         form = UserForm(request.POST)
         print(form)
         try:
             if form.is_valid():
-                form.save()
                 username = form.cleaned_data.get('username')
                 raw_password = form.cleaned_data.get('password1')
                 email = form.cleaned_data.get('email')
 
                 if request.POST['password1'] == request.POST['password2']:
                     user = User.objects.create_user(username=username, password=raw_password, email=email)
-                else:
-                    print('zz')
+                form.save()
 
             login(request, user)
             return redirect('/')

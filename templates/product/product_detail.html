@@ -7,15 +7,13 @@
 <script src="{% static 'js/star.js' %}"></script>
 <script>
     $(document).ready(function(){
+
         $('.starBtn').click(function(){
             var action = this.dataset.action
             var num = $(this).index()
             var starRate = num + 1
 
-            console.log(action);
-            console.log(starRate);
-
-             fetch("/shop/{{ product.id }}/",{
+             fetch("/shop/{{ id }}/",{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,11 +28,34 @@
                 console.log('별점을 매겼습니다.')
             })
             location.reload();
+        });
 
+        $('#review-btn').click(function(){
+            var productId = '{{ products.id }}'
+            var content = $('.review-content').val()
+            console.log(productId)
+
+            fetch("/review/",{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-CSRFToken':csrftoken,
+                },
+                body:JSON.stringify({'productId':productId, 'content':content})
+            })
+            .then((response)=>{
+                return response.json()
+            })
+            .then((data)=>{
+                console.log('리뷰를 남겼습니다')
+                $('.review-content').val('')
+            })
 
         })
     })
 </script>
+
+
 
 <div class="content">
     <div class="section01">
@@ -42,10 +63,6 @@
                 <h5>{{ products.name }} | {{ products.id }}</h5>
                 <img src="{{ products.image.url }}" alt="img" style="width:300px; height:400px;">
         </div>
-
-        <input type="hidden" id="consumer" name="consumer" value="{{ request.user.username }}">
-        <input type="hidden" id="product" name="product" value="{{ product.id }}">
-
     </div>
 
     <div class="product_info">
@@ -54,7 +71,6 @@
             <tr>
                 <th>상품명</th>
                 <td>{{ products.name }}</td>
-
             </tr>
             </thead>
 
@@ -71,7 +87,6 @@
                 <input type="number" value="{{ order.quantity }}" name="quantity" id="quantity" style="width:100px;" >
         <!--                        <button id="up"><img src="{% static 'images/plus.png' %}" alt="plus" style="width:15px; height:10px;"></button>-->
         <!--                        <button id="down"><img src="{% static 'images/minus.png' %}" alt="minus" style="width:15px; height:10px;"></button>-->
-
                 <input type="hidden" name="price" id="price"  value="{{ products.price }}">개
         </div>
 
@@ -80,29 +95,28 @@
             <button class="buy_button" id="buy_button" onclick="location.href='{% url 'checkout' %}'">구매하기</button>
             <button class="cart_button" type="button">장바구니 담기</button>
         </div>
-
     </div>
 
-       <div class="section03" style="margin-top: -200px; margin-left:36vh; width:500px;">
-            <div class="stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-            </div>
-            <div class="print">
-                후기를 남겨주세요!
-            </div>
-            <button class="starBtn" data-product="{{product.id}}" data-action="star_rating" style="margin-left:20px; width:80px; border:none; background-color:#333; color:white; height:30px; font-size:16px;">별점주기</button>
+    <div class="section03" style="margin-top: -200px; margin-left:36vh; width:500px;">
+        <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
         </div>
+        <div class="print">
+            후기를 남겨주세요!
+        </div>
+        <button class="starBtn" data-product="{{product.id}}" data-action="star_rating" style="margin-left:20px; width:80px; border:none; background-color:#333; color:white; height:30px; font-size:16px;">별점주기</button>
+    </div>
 
 
 
 
 </div>
 
-<section>
+<section style="margin-bottom:100px;">
 <ul class="tab_menu">
     <li data-alt="tab1" class="active">상세정보</li>
     <li data-alt="tab2">상품후기</li>
@@ -124,15 +138,50 @@
             <tbody>
             <tr>
                 <td>
-                    <form method="post" class="review-form">
-                        {% csrf_token %}
-                        <input type="text" class="reivew-content" id="content" name="content" placeholder="리뷰를 남겨주세요!" style="height: 100px; width:1058px; margin: 0px;">
-                        <input type="hidden" value="{{ product.id }}" id="review-product" name="review-product">
-                        <button type="submit" style="border:none; width:100px; height:100px; background-color:black; color:white;" id="review-btn">리뷰 작성</button>
+                    <input type="text" class="review-content" id="review-content" name="review-content" placeholder="리뷰를 남겨주세요!" style="height: 100px; width:1058px; margin: 0px; resize:none;"></input>
+                    <button type="submit" style="border:none; width:100px; height:100px; background-color:black; color:white;" id="review-btn">리뷰 작성</button>
+                    {% if reviews %}
+                        {% for review in reviews %}
                         <ul style="border-top: 1px solid #D8D8D8;; margin-top: 100px;">
-                            <li style="margin-top: 30px; list-style:none;"></li>
+                            <li style="margin-top: 30px; list-style:none;"><strong>{{ review.customer }}</strong> | {{ review.create_date }}</li>
+                            <li style="margin-top:60px; list-style:none;">{{ review.content }}</li>
                         </ul>
-                    </form>
+                                {% endfor %}
+                    {% endif %}
+                    <ul class="pagination" style="border-top:none; margin-top: 30px; text-align:center;  display:flex;justify-content:center; align-items:center;">
+                        {% if reviews.has_previous %}
+                            <li class="page-item">
+                                <a href="?page={{ reviews.previous_page_number }}" class="page-link" style="color:black;">이전</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a href="#" class="page-link" tabindex="-1" aria-disabled="true" style="color:black;">이전</a>
+                            </li>
+                        {% endif %}
+
+                        {% for page_number in reviews.paginator.page_range %}
+                            {% if page_number == reviews.number %}
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                                </li>
+
+                                {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if question_list.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{ reviews.next_page_number }}" class="page-link"  style="color:black;">다음</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a href="#" class="page-link" tabindex="-1" aria-disabled="true"  style="color:black;">다음</a>
+                            </li>
+                        {% endif %}
+                    </ul>
                 </td>
             </tr>
             </tbody>
@@ -142,8 +191,5 @@
     <div id="tab4"></div>
 </div>
 </section>
-
-
-
 
 {% endblock %}

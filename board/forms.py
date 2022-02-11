@@ -1,7 +1,7 @@
 from django import forms
 from .models import Question, Answer, Comment, User
 
-class QustionForm(forms.ModelForm):
+class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = [
