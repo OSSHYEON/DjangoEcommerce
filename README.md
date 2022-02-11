@@ -14,8 +14,6 @@
   ```pip install easy_thumbnails```
   + ```allauth 0.48.0```
   ```pip install django-allauth```
-  + ```rest_framework 3.13.1```
-  ```pip install djangorestframework```
   + ```debug_toolbar 3.2.4```
   ```pip install django-debug-toolbar```
   
