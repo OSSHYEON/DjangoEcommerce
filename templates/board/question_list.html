@@ -24,7 +24,7 @@
                             <tr>
                             <td>{{ question.id }}</td>
                             <td><a href="{% url 'board:question_detail' question.id %}">{{ question.title }}</a></td>
-                            <td>{{ question.author.username }}</td>
+                            <td>{{ question.author }}</td>
                             <td>
                                 {% if question.modify_date is null %}
                                     {{ question.create_date }}
@@ -39,10 +39,48 @@
                 </tbody>
             </table>
         </div>
-        <div class="btn-wrap">
-                <button onclick="location.href='/board/question_create/'" class="question_btn">질문 작성</button>
-        </div>
     </div>
 </div>
+
+<ul class="pagination" style="border-top:none; margin-top: 30px; text-align:center;  display:flex;justify-content:center; align-items:center;">
+  {% if question_list.has_previous %}
+    <li class="page-item">
+        <a href="?page={{ question_list.previous_page_number }}" class="page-link" style="color:black;">이전</a>
+    </li>
+  {% else %}
+    <li class="page-item disabled">
+        <a href="#" class="page-link" tabindex="-1" aria-disabled="true" style="color:black;">이전</a>
+    </li>
+  {% endif %}
+
+  {% for page_number in question_list.paginator.page_range %}
+  {% if page_number >= question_list.number|add:-5 and page_number <= question_list.number|add:5 %}
+    {% if page_number == question_list.number %}
+        <li class="page-item active" aria-current="page">
+            <a href="?page={{ page_number }}" class="page-link"  style="color:black; width:40px;">{{ page_number }}</a>
+        </li>
+    {% else %}
+        <li class="page-item">
+            <a href="?page={{ page_number }}" class="page-link"  style="color:black; width:40px;">{{ page_number }}</a>
+        </li>
+    {% endif %}
+  {% endif %}
+  {% endfor %}
+
+  {% if question_list.has_next %}
+    <li class="page-item">
+        <a href="?page={{ question_list.next_page_number }}" class="page-link"  style="color:black;">다음</a>
+    </li>
+  {% else %}
+    <li class="page-item disabled">
+        <a href="#" class="page-link" tabindex="-1" aria-disabled="true"  style="color:black;">다음</a>
+    </li>
+  {% endif %}
+
+</ul>
+<div class="btn-wrap"  style="margin-bottom: 100px;">
+    <button onclick="location.href='/board/question_create/'" class="question_btn" style="float:right; border:none; background-color:#333; color:white; width:200px;height:42px; margin-right:300px;">질문 작성</button>
+</div>
+
 
 {% endblock %}

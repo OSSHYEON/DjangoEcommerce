@@ -38,7 +38,9 @@ $(document).ready(function(){
         var result = $(this).attr('data-alt')
         $('.tabs div').removeClass('active')
         $('#'+result).addClass('active')
+
         $('.tabs').last().addClass('active')
     })
 })
+
 

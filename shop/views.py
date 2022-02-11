@@ -43,6 +43,7 @@ def shop(request):
 
 
 def detail(request, pk):
+
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -63,6 +64,15 @@ def detail(request, pk):
     return render(request, 'product/product_detail.html', context)
 
 
+def star_rating(request, pk):
+    data = json.loads(request.body)
+    action = data['action']
+    product = Product.objects.get(id=pk)
+    customer = request.user.customer
+    starRate = data['starRate']
+
+    if action == 'star_rating':
+        product.star_rating = starRate
 # def add_review(request):
 #     url = request.META.get('HTTP_REFERER')
 #     try:

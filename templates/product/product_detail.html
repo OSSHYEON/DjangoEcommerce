@@ -5,7 +5,36 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 <link rel="stylesheet" href="{% static 'css/product.css' %}">
 <script src="{% static 'js/star.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        $('.starBtn').click(function(){
+            var action = this.dataset.action
+            var num = $(this).index()
+            var starRate = num + 1
 
+            console.log(action);
+            console.log(starRate);
+
+             fetch("/shop/{{ product.id }}/",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken' : csrftoken,
+                },
+                body:JSON.stringify({'action':action, 'starRate':starRate})
+            })
+            .then((response)=>{
+                return response.json()
+            })
+            .then((data)=>{
+                console.log('별점을 매겼습니다.')
+            })
+            location.reload();
+
+
+        })
+    })
+</script>
 
 <div class="content">
     <div class="section01">
@@ -38,9 +67,6 @@
         </table>
 
         <div class="info_box">
-
-
-
                 {% csrf_token %}
                 <input type="number" value="{{ order.quantity }}" name="quantity" id="quantity" style="width:100px;" >
         <!--                        <button id="up"><img src="{% static 'images/plus.png' %}" alt="plus" style="width:15px; height:10px;"></button>-->
@@ -56,6 +82,21 @@
         </div>
 
     </div>
+
+       <div class="section03" style="margin-top: -200px; margin-left:36vh; width:500px;">
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="print">
+                후기를 남겨주세요!
+            </div>
+            <button class="starBtn" data-product="{{product.id}}" data-action="star_rating" style="margin-left:20px; width:80px; border:none; background-color:#333; color:white; height:30px; font-size:16px;">별점주기</button>
+        </div>
+
 
 
 
@@ -102,18 +143,7 @@
 </div>
 </section>
 
-<div class="section03">
-    <div class="stars">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-    </div>
-    <div class="print">
-        후기를 남겨주세요!
-    </div>
-</div>
+
 
 
 {% endblock %}
