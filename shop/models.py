@@ -19,7 +19,7 @@ class Product(models.Model):
     digital = models.BooleanField(default=False, null=True, blank=False)
     image = ThumbnailerImageField(upload_to='media', null=True)
     about = models.TextField(null=True, blank=True)
-    star_rating = models.IntegerField(null=True, blank=True)
+
 
     def __str__(self):
         return self.name
@@ -31,6 +31,12 @@ class Review(models.Model):
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
     recommend = models.IntegerField(null=True, blank=True)
+
+class Star(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    star_ratings = models.IntegerField(null=True, blank=True)
+
+
 
 
 

@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/join.css' %}">
-
+<script src="{% static 'js/join.js' %}"></script>
 <div class="container my-3">
 
     <form method="post" class="post-form" action="{% url 'signup' %}" style="padding: 10px 2px 1px 10px;">
@@ -15,7 +15,7 @@
 
         <div class="form-group" style="padding-bottom:5px;">
             <input type="password" class="form-control" name="password1" id="password1"
-                   value="{{ form.password1.value|default_if_none:'' }}" placeholder="비밀번호">
+                   value="{{ form.password1.value|default_if_none:'' }}" placeholder="비밀번호 : 영문대소문자+숫자">
         </div>
 
         <div class="form-group" style="padding-bottom:5px;">

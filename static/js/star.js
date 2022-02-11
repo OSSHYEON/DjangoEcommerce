@@ -1,12 +1,9 @@
 $(document).ready(function(){
-    console.log("ㅋㅋ");
-
+    var Rating = 0
     $('.stars .fas').click(function(){
-        console.log("클릭")
         $(this).addClass('active')
         $(this).prevAll().addClass('active')
         $(this).nextAll().removeClass('active')
-
 
         var num = $(this).index()
         var starRate = num + 1
@@ -23,12 +20,38 @@ $(document).ready(function(){
         else if(starRate==4){
             $('.print').html('<img src="/static/images/smiling.png" style="width:20px;">' + '맘에들어요')
         }
-        else{
+        else if(starRate==5){
             $('.print').html('<img src="/static/images/smile.png" style="width:20px;">' + '최고에요')
         }
+        Rating = starRate
+        console.log(Rating)
     })
 
-});
+    $('.starBtn').click(function(){
+        console.log(productId)
+        fetch("/star/",{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken' : csrftoken,
+        },
+        body:JSON.stringify({'Rating':Rating, 'productId':productId})
+    })
+    .then((response)=>{
+        return response.json()
+    })
+    .then((data)=>{
+        console.log('별점을 매겼습니다.')
+    })
+    location.reload();
+    })
+})
+
+
+
+
+
+
 
 $(document).ready(function(){
     $('.tab_menu li').click(function(){
@@ -42,5 +65,3 @@ $(document).ready(function(){
         $('.tabs').last().addClass('active')
     })
 })
-
-

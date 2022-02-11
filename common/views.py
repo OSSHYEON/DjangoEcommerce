@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 import requests
 from django.contrib.auth.models import User
+from shop.models import Customer
 from django.contrib import messages
 from common.forms import UserForm
 
@@ -13,25 +14,31 @@ from common.forms import UserForm
 def signup(request):
     if request.method == "POST":
         form = UserForm(request.POST)
-        print(form)
         try:
             if form.is_valid():
+                user_form = form.save(commit=False)
                 username = form.cleaned_data.get('username')
                 raw_password = form.cleaned_data.get('password1')
                 email = form.cleaned_data.get('email')
-
+                print(username, raw_password, email)
                 if request.POST['password1'] == request.POST['password2']:
                     user = User.objects.create_user(username=username, password=raw_password, email=email)
-                form.save()
+                user_form.save()
 
-            login(request, user)
-            return redirect('/')
+                customer = Customer.objects.create(
+                    name = user.username,
+                    email = email,
+                    user = user.id
+                )
+                customer.save()
+                return redirect('/')
 
-        except:
-            return redirect('/')
+        except Exception as error:
+            print(error)
+            return redirect('common:signup')
     else:
         form = UserForm()
-        print('zz')
+        print('회원가입페이지')
     return render(request, 'common/signup.html', {'form': form})
 
 

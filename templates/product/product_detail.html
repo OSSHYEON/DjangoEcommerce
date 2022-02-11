@@ -4,35 +4,17 @@
 <script language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 <link rel="stylesheet" href="{% static 'css/product.css' %}">
+<script>
+    var productId = {{ products.id }}
+</script>
 <script src="{% static 'js/star.js' %}"></script>
 <script>
     $(document).ready(function(){
 
-        $('.starBtn').click(function(){
-            var action = this.dataset.action
-            var num = $(this).index()
-            var starRate = num + 1
-
-             fetch("/shop/{{ id }}/",{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken' : csrftoken,
-                },
-                body:JSON.stringify({'action':action, 'starRate':starRate})
-            })
-            .then((response)=>{
-                return response.json()
-            })
-            .then((data)=>{
-                console.log('별점을 매겼습니다.')
-            })
-            location.reload();
-        });
-
         $('#review-btn').click(function(){
             var productId = '{{ products.id }}'
             var content = $('.review-content').val()
+
             console.log(productId)
 
             fetch("/review/",{
@@ -50,11 +32,9 @@
                 console.log('리뷰를 남겼습니다')
                 $('.review-content').val('')
             })
-
         })
     })
 </script>
-
 
 
 <div class="content">
@@ -110,11 +90,10 @@
         </div>
         <button class="starBtn" data-product="{{product.id}}" data-action="star_rating" style="margin-left:20px; width:80px; border:none; background-color:#333; color:white; height:30px; font-size:16px;">별점주기</button>
     </div>
-
-
-
-
 </div>
+
+
+
 
 <section style="margin-bottom:100px;">
 <ul class="tab_menu">
@@ -146,7 +125,7 @@
                             <li style="margin-top: 30px; list-style:none;"><strong>{{ review.customer }}</strong> | {{ review.create_date }}</li>
                             <li style="margin-top:60px; list-style:none;">{{ review.content }}</li>
                         </ul>
-                                {% endfor %}
+                        {% endfor %}
                     {% endif %}
                     <ul class="pagination" style="border-top:none; margin-top: 30px; text-align:center;  display:flex;justify-content:center; align-items:center;">
                         {% if reviews.has_previous %}

@@ -2,22 +2,15 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.utils import timezone
-from django.utils.safestring import mark_safe
-from django.conf import settings
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from requests import Response
-from .forms import ReviewForm
-from .models import Product, Order, OrderItem, Customer, ShippingAddress, Review
+from .models import Product, Order, OrderItem, Customer, ShippingAddress, Review, Star
 import json
 import requests
-import http.client
-from django.urls import reverse
 
 
 def shop(request):
-
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -49,9 +42,7 @@ def detail(request, pk):
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
-        reviews= Review.objects.filter(product_id=pk).order_by('-create_date')
-        paginator = Paginator(reviews, 5)
-        page_object = paginator.get_page(page)
+
 
     else:
         try:
@@ -59,25 +50,29 @@ def detail(request, pk):
             order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
             cartItems = order['order.get_cart_items']
 
+
         except:
             cartItems = 0
+            page_object= 0
 
+    reviews= Review.objects.filter(product_id=pk).order_by('-create_date')
+    paginator = Paginator(reviews, 5)
+    page_object = paginator.get_page(page)
     products = get_object_or_404(Product, id=pk)
     context ={'products':products, 'cartItems':cartItems, 'reviews':page_object}
     return render(request, 'product/product_detail.html', context)
 
 
-def star_rating(request, pk):
+def star_rating(request):
     data = json.loads(request.body)
-    action = data['action']
-    product = Product.objects.get(id=pk)
-    customer = request.user.customer
-    starRate = data['starRate']
-
-    if action == 'star_rating':
-        product.star_rating = starRate
-
-    return JsonResponse('별점이 추가되었습니다', safe=False)
+    product_id = data['productId']
+    stars = data['Rating']
+    stars_objects = Star.objects.create(
+        product_id = product_id,
+        star_ratings = stars
+    )
+    stars_objects.save()
+    return JsonResponse('별점이 등록되었습니다', safe=False)
 
 
 def add_review(request):
@@ -89,15 +84,12 @@ def add_review(request):
             product_id = product_id,
             customer_id = request.user.customer.id,
             content = content,
-            create_date = timezone.now()
+            create_date = timezone.now(),
         )
         review.save()
         return JsonResponse('리뷰가 추가되었습니다', safe=False)
     except Exception as e:
         print(e)
-
-
-
 
 
 
