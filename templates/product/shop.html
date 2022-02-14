@@ -2,7 +2,36 @@
 {% load static %}
 {% block content %}
 
-<script src="{% static 'js/cart.js' %}"></script>
+<script>
+$(document).ready(function(){
+    console.log('히히')
+    $('.btn-to-cart').click(function(){
+        var productId = this.dataset.product
+        var action = this.dataset.action
+
+        if (user === 'AnonymousUser'){
+            alert('로그인이 필요한 서비스입니다')
+        }
+        else{
+            fetch("/update_item/", {
+            method: 'POST',
+            headers:{
+                'Content-Type' : 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({'productId':productId, 'action':action})
+            })
+            .then((response)=>{
+                return response.json()
+            })
+            .then((data)=>{
+                alert('장바구니에 추가되었습니다', data)
+                location.reload();
+            })
+        }
+    })
+})
+</script>
 
 <div class="section01" style="padding: 10.5rem; text-align:center; margin-bottom:120vh;">
 <h3 style="text-align:center; padding:10px 0px 50px;"> 상품 전체 </h3>
@@ -15,7 +44,7 @@
                         <a href="#" style="text-decoration : none; color:black;">{{ product.name }}</a>
                     </div>
                     <div class="product-name" style="height:25px;">
-                        <button data-product="{{ product.id }}" data-action="add" class="btn-to-cart" onclick="btn_to_cart()">장바구니 담기</button>
+                        <button data-product="{{ product.id }}" data-action="add" class="btn-to-cart">장바구니 담기</button>
                         <p style="text-decoration : none; color:black; float:right; margin-right: 10px;">{{ product.price }}원</p>
                     </div>
             </li>

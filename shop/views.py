@@ -99,7 +99,6 @@ def add_review(request):
 # 장바구니, 주문
 
 def cart(request):
-
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -131,6 +130,9 @@ def checkout(request):
 
     context = {'items': items, 'order': order, 'cartItems':cartItems, 'shipping': False}
     return render(request, 'product/checkout.html', context)
+
+
+
 
 
 def updateItem(request):

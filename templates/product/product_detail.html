@@ -8,6 +8,7 @@
     var productId = {{ products.id }}
 </script>
 <script src="{% static 'js/star.js' %}"></script>
+
 <script>
     $(document).ready(function(){
 
@@ -34,6 +35,26 @@
             })
         })
     })
+
+    $(document).ready(function(){
+    console.log('하이')
+        $('.cart_button').click(function(){
+            var action = this.dataset.action
+            fetch("/update_item/", {
+            method: 'POST',
+            headers:{
+                'Content-Type' : 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({'productId':productId, 'action':action})
+        })
+        .then((response)=>{
+            return response.json()
+        })
+        alert('장바구니에 추가되었습니다')
+        location.reload();
+    })
+})
 </script>
 
 
@@ -72,8 +93,8 @@
 
 
         <div class="button_wrap">
-            <button class="buy_button" id="buy_button" onclick="location.href='{% url 'checkout' %}'">구매하기</button>
-            <button class="cart_button" type="button">장바구니 담기</button>
+            <button class="buy_button" id="buy_button" onclick="#'">구매하기</button>
+            <button class="cart_button" type="button" data-action="add">장바구니 담기</button>
         </div>
     </div>
 
