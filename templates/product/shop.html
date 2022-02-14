@@ -34,7 +34,12 @@ $(document).ready(function(){
 </script>
 
 <div class="section01" style="padding: 10.5rem; text-align:center; margin-bottom:120vh;">
-<h3 style="text-align:center; padding:10px 0px 50px;"> 상품 전체 </h3>
+{% if not kw %}
+    <h3 style="text-align:center; padding:10px 0px 50px;"> 상품 전체 </h3>
+{% else %}
+    <h3 style="text-align:center; padding:10px 0px 50px;"> 검색 결과 </h3>
+{% endif %}
+
 
 <ul style="text-align:center; list-style:none; padding-left: 4.5%; ">
         {% for product in products %}

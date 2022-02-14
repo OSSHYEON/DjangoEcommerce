@@ -2,7 +2,7 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.utils import timezone
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from .models import Product, Order, OrderItem, Customer, ShippingAddress, Review, Star

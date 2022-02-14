@@ -1,13 +1,10 @@
-import os, requests
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login
 from django.contrib.sites import requests
-from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
 import requests
 from django.contrib.auth.models import User
 from shop.models import Customer, Order
-from board.models import Question, Answer
+from board.models import Question
 from django.contrib import messages
 from common.forms import UserForm
 
