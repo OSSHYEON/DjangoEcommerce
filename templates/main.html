@@ -49,7 +49,7 @@
         </li>
         <li>
             {% if user.is_authenticated %}
-            <a href="#">마이페이지</a>
+            <a href="{% url 'mypage' %}">마이페이지</a>
             {% else %}
             <a class="join" href="{% url 'signup' %}">회원가입</a>
             {% endif %}
@@ -85,7 +85,6 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
           <a class="nav-link active" href="{% url 'shop' %}" style="padding-right:10px; font-size:15px;">전체상품</a>
-          <a class="nav-link active" aria-current="page" href="#" style="padding-left:30px; font-size:15px;">베스트</a>
           <a class="nav-link active" href="{% url 'board:notice' %}" style="padding-left:30px; font-size:15px;">공지사항</a>
           <a class="nav-link active" href="{% url 'board:question_list' %}" style="padding-left:30px; font-size:15px;">묻고 답하기</a>
           <a class="nav-link active" href="/board/info/" style="padding-left:30px; font-size:15px;">판매자 정보</a>

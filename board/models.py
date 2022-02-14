@@ -14,6 +14,7 @@ class Notice(models.Model):
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
+    hits = models.PositiveIntegerField(default=0)
 
 #=======================================================================================================================
 # Q&A 게시판
@@ -26,12 +27,13 @@ class Question(models.Model):
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
+    hits = models.PositiveIntegerField(default=0)
 
 
 # 답변
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, default='')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)

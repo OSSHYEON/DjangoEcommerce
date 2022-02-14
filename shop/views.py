@@ -59,6 +59,8 @@ def detail(request, pk):
     paginator = Paginator(reviews, 5)
     page_object = paginator.get_page(page)
     products = get_object_or_404(Product, id=pk)
+    products.hits += 1
+    products.save()
     context ={'products':products, 'cartItems':cartItems, 'reviews':page_object}
     return render(request, 'product/product_detail.html', context)
 

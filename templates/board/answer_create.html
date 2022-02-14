@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/question_create.css' %}">
+
+<div class="form-wrap" style="margin-bottom:200px;">
+        <form method="post" class="question_form">
+        {% csrf_token %}
+            <div class="title-wrap">
+                <div class="label-wrap"><label for="title">제목</label></div>
+                <input type="text" id="title" name="title">
+            </div>
+
+            <div class="content-wrap">
+                <div class="label-wrap"><label for="content">내용</label></div>
+                <textarea name="content" id="content" cols="70" rows="20" style="resize:none;"></textarea>
+            </div>
+
+            <div class="btn-wrap" style="margin-top:50px; display:flex; justify-content:center; margin-left:100px;">
+                <button type="submit" class="btn btn-primary" style="width:300px; height:50px;">답변 작성</button>
+            </div>
+        </form>
+</div>
+
+{% endblock %}

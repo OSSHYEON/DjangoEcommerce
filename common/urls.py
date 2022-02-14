@@ -9,5 +9,5 @@ urlpatterns = [
     path('signup/', views.signup, name="signup"),
     path('kakaologin/', views.kakao_login, name="kakaologin"),
     path('kakaologin/callback/', views.kakao_login_callback, name="kakao_callback"),
-    # path('login/kakaologin/', views.kakao_login_redirect, name="kakao_login"),
+    path('mypage/', views.mypage, name='mypage'),
 ]

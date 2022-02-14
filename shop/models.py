@@ -19,6 +19,7 @@ class Product(models.Model):
     digital = models.BooleanField(default=False, null=True, blank=False)
     image = ThumbnailerImageField(upload_to='media', null=True)
     about = models.TextField(null=True, blank=True)
+    hits = models.PositiveIntegerField(default=0)
 
 
     def __str__(self):

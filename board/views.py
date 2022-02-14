@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from board.models import Notice, Question
+from board.models import Notice, Question, Answer
 from django.contrib.auth.decorators import login_required
-from .forms import QuestionForm
+from .forms import QuestionForm, AnswerForm
 from django.core.paginator import Paginator
 
 
@@ -11,6 +11,7 @@ def notice_list(request):
     notice_list = Notice.objects.order_by('create_date')
     paginator = Paginator(notice_list, 10)
     page_object = paginator.get_page(page)
+
     return render(request, 'board/notice.html', {'notice_list':page_object})
 
 def notice_detail(request, pk):
@@ -18,6 +19,8 @@ def notice_detail(request, pk):
     context = {
         'notice_detail' : notice_detail
     }
+    notice_detail.hits += 1
+    notice_detail.save()
     return render(request, 'board/notice_detail.html', context)
 
 
@@ -31,7 +34,14 @@ def question_list(request):
 
 def question_detail(request, pk):
     question = get_object_or_404(Question, id=pk)
-    return render(request, 'board/question_detail.html', {'question':question})
+    answer = Answer.objects.filter(question_id=pk).order_by('-create_date')
+    context = {
+        'question':question,
+        'answer':answer
+    }
+    question.hits += 1
+    question.save()
+    return render(request, 'board/question_detail.html', context)
 
 
 
@@ -49,12 +59,19 @@ def question_create(request):
     return render(request, 'board/question_create.html', {'form':form})
 
 @login_required(login_url='common:login')
-def answer_create(request, answer_id):
-    pass
+def answer_create(request, pk):
+    question = get_object_or_404(Question, id=pk)
+    form = AnswerForm()
+    if request.method == "POST":
+        answer = form.save(commit=False)
+        answer.content = request.POST['content']
+        answer.create_date = timezone.now()
+        answer.author = request.user.customer
+        answer.question = question
+        answer.save()
+        return redirect('board:question_detail', pk=question.id)
+    return render(request, 'board/answer_create.html', {'form':form})
 
-@login_required(login_url='common:login')
-def comment_create(request, comment_id):
-    pass
 
 
 def company_info(request):

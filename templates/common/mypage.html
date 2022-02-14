@@ -1,13 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p>ㅎㅇ</p>
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/QnA.css' %}">
 
-{{user.username}}
+<div class="content01">
+    <div class="menu">
+        <div class="table">
+            <h1>마이페이지</h1>
+            <table>
+                <thead>
+                <tr>
+                <th>주문일자</th>
+                <th>주문번호</th>
+                </tr>
+                </thead>
 
-</body>
-</html>
+                <tbody>
+                {% if orders %}
+                    {% for order in orders %}
+                        <tr>
+                        <td>{{ order.date_ordered }}</td>
+                        <td>{{ order.id }}</td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                {% endif %}
+            </table>
+
+            <table style="margin-top:100px; margin-bottom:200px;">
+                <thead>
+                <tr>
+                    <th>내가 쓴 질문</th>
+                    <th>작성 일자</th>
+                    <th>답변 갯수</th>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                {% if questions %}
+                    {% for question in questions %}
+                        <tr>
+                            <td>{{ question.title }}</td>
+                            <td>{{ question.create_date }}</td>
+                            <td>{{ question.answer_set.count }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

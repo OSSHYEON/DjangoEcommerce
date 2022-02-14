@@ -26,8 +26,20 @@
         {% endif %}
     </div>
 
+<div class="btn-wrap" style="margin:80px 0px 100px 0px; display:flex; justify-content:right;">
+    <button onclick="location.href='/board/{{ question.id }}/answer-create/'" style="border:none;  background-color:#333; color:white; width:200px;height:42px;">답변 작성</button>
+</div>
 
-
+<div class="answer-lst">
+    {% for i in answer %}
+    <div class="asnwer-content"  style="border: 1px solid #fafafa; box-shadow:5px 5px 5px #E6E6E6; border-radius:10px; margin-bottom:30px;">
+        <div class="box-border" style="border-radius:10px 0px 0px 0px; width:0; height:0; border-top:40px solid #E6E6E6; border-bottom: 40px solid transparent; border-left:40px solid #E6E6E6; border-right:40px solid transparent;"></div>
+        <div class="content" style="margin:-10px 0px 0px 10px;">{{ i.content }}</div>
+        <div class="author" style="display:flex; justify-content:right; margin: 0px 20px 20px 0px">{{ i.author }}</div>
+        <div class="date" style="display:flex; justify-content:right;  margin: 0px 20px 20px 0px">{{ i.create_date }} 작성</div>
+    </div>
+    {% endfor %}
+</div>
 
 
 </div>

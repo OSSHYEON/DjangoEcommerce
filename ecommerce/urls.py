@@ -6,6 +6,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('shop.urls'), name='index'),
     path('common/', include('common.urls')),
+    path('common/', include('allauth.urls')),
     path('board/', include('board.urls')),
 ]
 

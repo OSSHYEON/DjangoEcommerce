@@ -23,7 +23,12 @@
                         {% for question in question_list %}
                             <tr>
                             <td>{{ question.id }}</td>
-                            <td><a href="{% url 'board:question_detail' question.id %}">{{ question.title }}</a></td>
+                            <td>
+                                <a href="{% url 'board:question_detail' question.id %}">{{ question.title }}</a>
+                                {% if question.answer_set.count > 0 %}
+                                <span class="text-danger small ml-2">{{ question.answer_set.count }}</span>
+                                {% endif %}
+                            </td>
                             <td>{{ question.author }}</td>
                             <td>
                                 {% if question.modify_date is null %}
@@ -32,7 +37,7 @@
                                     {{ question.modify_date }}
                                 {% endif %}
                             </td>
-                            <td></td>
+                            <td>{{ question.hits }}</td>
                             </tr>
                         {% endfor %}
                     {% endif %}
